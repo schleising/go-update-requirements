@@ -1,9 +1,9 @@
 package main
 
 import (
+	"github.com/fatih/color"
 	"os"
 	"schleising.net/updater"
-	"github.com/fatih/color"
 )
 
 func main() {
@@ -13,18 +13,21 @@ func main() {
 		os.Exit(1)
 	}
 
-	// Get the filename from the command line
-	filename := os.Args[1]
+	// Get the filenames from the command line
+	filenames := os.Args[1:]
 
-	// Call the Update function from the updater package
-	if err := updater.RemoveVersions(filename); err != nil {
-		if os.IsNotExist(err) {
-			color.Red("Error: File '%s' does not exist\n", filename)
+	// Loop through the filenames
+	for _, filename := range filenames {
+		// Call the Update function from the updater package
+		if err := updater.RemoveVersions(filename); err != nil {
+			if os.IsNotExist(err) {
+				color.Red("Error: File '%s' does not exist\n", filename)
+			} else {
+				color.Red("Error: %s\n", err)
+			}
+			os.Exit(1)
 		} else {
-			color.Red("Error: %s\n", err)
+			color.Green("File updated successfully")
 		}
-		os.Exit(1)
-	} else {
-		color.Green("File updated successfully")
 	}
 }
