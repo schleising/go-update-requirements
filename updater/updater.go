@@ -19,7 +19,7 @@ func RemoveVersions(filename string) error {
 	}
 
 	// Print a message to the console to indicate that the file is being read
-	color.Blue("Reading '%s'\n", filename)
+	color.Blue("Reading '%s'", filename)
 
 	// Open the file for reading
 	if file, err := os.OpenFile(filename, os.O_RDWR, 0644); err != nil {

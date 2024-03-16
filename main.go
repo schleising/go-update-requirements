@@ -9,7 +9,7 @@ import (
 func main() {
 	// Read a filename from the command line
 	if len(os.Args) < 2 {
-		color.Red("Usage: updater <filename>")
+		color.Red("Usage: %s <filename> [<filename> ...]", os.Args[0])
 		os.Exit(1)
 	}
 
@@ -21,13 +21,13 @@ func main() {
 		// Call the Update function from the updater package
 		if err := updater.RemoveVersions(filename); err != nil {
 			if os.IsNotExist(err) {
-				color.Red("Error: File '%s' does not exist\n", filename)
+				color.Red("Error: File '%s' does not exist", filename)
 			} else {
-				color.Red("Error: %s\n", err)
+				color.Red("Error: %s", err)
 			}
 			os.Exit(1)
 		} else {
-			color.Green("File updated successfully")
+			color.Green("'%s' updated successfully", filename)
 		}
 	}
 }
