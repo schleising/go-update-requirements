@@ -1,4 +1,4 @@
-module schleising.net/main
+module schleising.net/remove-versions
 
 go 1.22.1
 
