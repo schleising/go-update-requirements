@@ -18,12 +18,16 @@ func main() {
 	// Get the filename from the command line
 	filename := os.Args[1]
 
-	// Check if the file exists
-	if _, err := os.Stat(filename); os.IsNotExist(err) {
-		// Print that file does not exist and exit include the filename in the message
-		fmt.Printf("File '%s' does not exist\n", filename)
+	// Call the Update function from the updater package
+	err := updater.Update(filename)
+
+	// Check for errors
+	if err != nil {
+		if os.IsNotExist(err) {
+			fmt.Printf("Error: File '%s' does not exist\n", filename)
+		} else {
+			fmt.Printf("Error: %s\n", err)
+		}
 		os.Exit(1)
 	}
-
-	updater.Update(filename)
 }
