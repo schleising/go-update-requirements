@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"github.com/fatih/color"
 )
 
 func RemoveVersions(filename string) error {
@@ -18,7 +19,7 @@ func RemoveVersions(filename string) error {
 	}
 
 	// Print a message to the console to indicate that the file is being read
-	fmt.Printf("Reading '%s'\n", filename)
+	color.Blue("Reading '%s'\n", filename)
 
 	// Open the file for reading
 	if file, err := os.OpenFile(filename, os.O_RDWR, 0644); err != nil {
@@ -42,7 +43,7 @@ func RemoveVersions(filename string) error {
 		}
 
 		// Print a message to the console to indicate that the requirement versions are being removed
-		fmt.Println("Removing requirement versions")
+		color.Blue("Removing requirement versions")
 
 		// Create a list of strings to hold the updated file contents
 		var updated_lines []string
@@ -60,7 +61,7 @@ func RemoveVersions(filename string) error {
 		}
 
 		// Print a message to the console to indicate that the updated file contents are being written
-		fmt.Println("Writing updated file contents")
+		color.Blue("Writing updated file contents")
 
 		// Truncate the file
 		if err := file.Truncate(0); err != nil {

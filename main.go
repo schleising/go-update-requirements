@@ -1,17 +1,15 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"schleising.net/updater"
+	"github.com/fatih/color"
 )
 
 func main() {
-	fmt.Println("In main")
-
 	// Read a filename from the command line
 	if len(os.Args) < 2 {
-		fmt.Println("Usage: updater <filename>")
+		color.Red("Usage: updater <filename>")
 		os.Exit(1)
 	}
 
@@ -19,17 +17,14 @@ func main() {
 	filename := os.Args[1]
 
 	// Call the Update function from the updater package
-	err := updater.RemoveVersions(filename)
-
-	// Check for errors
-	if err != nil {
+	if err := updater.RemoveVersions(filename); err != nil {
 		if os.IsNotExist(err) {
-			fmt.Printf("Error: File '%s' does not exist\n", filename)
+			color.Red("Error: File '%s' does not exist\n", filename)
 		} else {
-			fmt.Printf("Error: %s\n", err)
+			color.Red("Error: %s\n", err)
 		}
 		os.Exit(1)
 	} else {
-		fmt.Println("File updated successfully")
+		color.Green("File updated successfully")
 	}
 }
