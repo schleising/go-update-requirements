@@ -19,7 +19,7 @@ func main() {
 	// Loop through the filenames
 	for _, filename := range filenames {
 		// Call the Update function from the updater package
-		if err := updater.RemoveVersions(filename); err != nil {
+		if err := updater.UpdateRequirements(filename); err != nil {
 			if os.IsNotExist(err) {
 				color.Red("Error: File '%s' does not exist", filename)
 			} else {
@@ -27,7 +27,7 @@ func main() {
 			}
 			os.Exit(1)
 		} else {
-			color.Green("'%s' updated successfully", filename)
+			color.Green("Requirements updated successfully")
 		}
 	}
 }
