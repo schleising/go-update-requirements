@@ -19,7 +19,7 @@ func main() {
 	filename := os.Args[1]
 
 	// Call the Update function from the updater package
-	err := updater.Update(filename)
+	err := updater.RemoveVersions(filename)
 
 	// Check for errors
 	if err != nil {
@@ -29,5 +29,7 @@ func main() {
 			fmt.Printf("Error: %s\n", err)
 		}
 		os.Exit(1)
+	} else {
+		fmt.Println("File updated successfully")
 	}
 }
