@@ -10,15 +10,28 @@ import (
 )
 
 func UpdateRequirements(filename string) error {
-	// Call the uninstallPackages function
-	if err := uninstallPackages(); err != nil {
+	// Print a message to the console to indicate that the file is being processed
+	fmt.Println()
+	color.Blue("Processing %s", filename)
+
+	// Check if the file exists and is a regular file
+	if info, err := os.Stat(filename); err != nil {
 		return err
+	} else if info.IsDir() {
+		return fmt.Errorf("%s is a directory", filename)
+	} else if !info.Mode().IsRegular() {
+		return fmt.Errorf("%s is not a regular file", filename)
 	}
 
 	// Call the removeVersions function
 	if err := removeVersions(filename); err != nil {
 		return err
 	}
+
+	// Call the uninstallPackages function
+	if err := uninstallPackages(); err != nil {
+		return err
+	}	
 
 	// Call the installPackages function
 	if err := installPackages(filename); err != nil {
@@ -30,15 +43,6 @@ func UpdateRequirements(filename string) error {
 }
 
 func removeVersions(filename string) error {
-	// Check if the file exists and is a regular file
-	if info, err := os.Stat(filename); err != nil {
-		return err
-	} else if info.IsDir() {
-		return fmt.Errorf("'%s' is a directory", filename)
-	} else if !info.Mode().IsRegular() {
-		return fmt.Errorf("'%s' is not a regular file", filename)
-	}
-
 	// Print a message to the console to indicate that the file is being read
 	color.Blue("Updating %s", filename)
 
@@ -149,12 +153,15 @@ func uninstallPackages() error {
 		}
 	}
 
-	// Create a new command to uninstall the package
-	cmd = exec.Command("pip", args...)
+	// Check if there are any packages to uninstall
+	if len(args) > 2 {
+		// Create a new command to uninstall the package
+		cmd = exec.Command("pip", args...)
 
-	// Run the command
-	if err := cmd.Run(); err != nil {
-		return err
+		// Run the command
+		if err := cmd.Run(); err != nil {
+			return err
+		}
 	}
 
 	// Print a message to the console to indicate that the packages have been uninstalled

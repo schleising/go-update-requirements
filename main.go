@@ -21,7 +21,7 @@ func main() {
 		// Call the Update function from the updater package
 		if err := updater.UpdateRequirements(filename); err != nil {
 			if os.IsNotExist(err) {
-				color.Red("Error: File '%s' does not exist", filename)
+				color.Red("Error: File %s does not exist", filename)
 			} else {
 				color.Red("Error: %s", err)
 			}
