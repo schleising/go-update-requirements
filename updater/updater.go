@@ -5,10 +5,10 @@ import (
 	"os"
 )
 
-func Update(filename string) (error) {
+func Update(filename string) error {
 	// Check if the file exists
 	_, err := os.Stat(filename)
-	
+
 	// If the file does not exist, return an error
 	if err != nil {
 		return err
