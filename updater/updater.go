@@ -21,6 +21,10 @@ func UpdateRequirements(filename string) error {
 		return fmt.Errorf("%s is a directory", filename)
 	} else if !info.Mode().IsRegular() {
 		return fmt.Errorf("%s is not a regular file", filename)
+	} else if info.Mode().Perm() & 0200 == 0 {
+		return fmt.Errorf("%s is not writable", filename)
+	} else if info.Mode().Perm() & 0400 == 0 {
+		return fmt.Errorf("%s is not readable", filename)
 	}
 
 	// Call the removeVersions function
