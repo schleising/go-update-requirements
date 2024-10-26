@@ -13,7 +13,8 @@ import (
 func UpdateRequirements(filename string) error {
 	// Print a message to the console to indicate that the file is being processed
 	fmt.Println()
-	color.Blue("Processing %s", filename)
+	boldCyan := color.New(color.FgCyan, color.Bold)
+	boldCyan.Printf("Processing %s\n", filename)
 
 	// Check if the file exists and is a regular file
 	if info, err := os.Stat(filename); err != nil {
@@ -51,6 +52,7 @@ func UpdateRequirements(filename string) error {
 func FindRequirements() ([]string, error) {
 	// Print a message to the console to indicate that the files are being found
 	color.Blue("Finding requirements.txt files")
+	println()
 
 	// Create a list of strings to hold the filenames
 	var filenames []string
@@ -71,7 +73,8 @@ func FindRequirements() ([]string, error) {
 			filenames = append(filenames, path)
 
 			// Print a message to the console to indicate that the file has been found
-			color.Cyan("Found %s", path)
+			boldCyan := color.New(color.FgCyan, color.Bold)
+			boldCyan.Printf("Found %s\n", path)
 		}
 
 		// Return success
@@ -90,9 +93,6 @@ func FindRequirements() ([]string, error) {
 }
 
 func removeVersions(filename string) error {
-	// Print a message to the console to indicate that the file is being read
-	color.Blue("Updating %s", filename)
-
 	// Open the file for reading
 	if file, err := os.OpenFile(filename, os.O_RDWR, 0644); err != nil {
 		return err
