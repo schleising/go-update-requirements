@@ -2,6 +2,7 @@ package updater
 
 import (
 	"bufio"
+	"path/filepath"
 	"fmt"
 	"github.com/fatih/color"
 	"os"
@@ -44,6 +45,48 @@ func UpdateRequirements(filename string) error {
 
 	// Return success
 	return nil
+}
+
+// Function to find all files called requirements.txt recursively from the current directory
+func FindRequirements() ([]string, error) {
+	// Print a message to the console to indicate that the files are being found
+	color.Blue("Finding requirements.txt files")
+
+	// Create a list of strings to hold the filenames
+	var filenames []string
+
+	// Get the current working directory
+	wd, err := os.Getwd()
+
+	// Check for errors
+	if err != nil {
+		return nil, err
+	}
+
+	// Walk the current directory and its subdirectories
+	if err := filepath.Walk(wd, func(path string, info os.FileInfo, err error) error {
+		// Check if the file is called requirements.txt
+		if info.Name() == "requirements.txt" {
+			// Add the filename to the list of filenames
+			filenames = append(filenames, path)
+
+			// Print a message to the console to indicate that the file has been found
+			color.Cyan("Found %s", path)
+		}
+
+		// Return success
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	// Check if any files were found
+	if len(filenames) == 0 {
+		return nil, fmt.Errorf("no requirements.txt files found")
+	}
+
+	// Return the list of filenames
+	return filenames, nil
 }
 
 func removeVersions(filename string) error {
@@ -108,7 +151,7 @@ func removeVersions(filename string) error {
 	}
 
 	// Print a message to the console to indicate that the file has been updated
-	color.Green("%s updated successfully", filename)
+	color.Green("Versions removed successfully")
 
 	// Return success
 	return nil

@@ -7,14 +7,26 @@ import (
 )
 
 func main() {
+	// Declare a variable to hold the filenames
+	var filenames []string;
+	
 	// Read a filename from the command line
 	if len(os.Args) < 2 {
-		color.Red("Usage: %s <filename> [<filename> ...]", os.Args[0])
-		os.Exit(1)
-	}
+		// Declare a variable to hold the error
+		var err error;
 
-	// Get the filenames from the command line
-	filenames := os.Args[1:]
+		// Find all files called requirements.txt recursively from the current directory
+		filenames, err = updater.FindRequirements()
+
+		// Check if there was an error
+		if err != nil {
+			color.Red("Error: %s", err)
+			os.Exit(1)
+		}
+	} else {
+		// Get the filenames from the command line
+		filenames = os.Args[1:]
+	}
 
 	// Loop through the filenames
 	for _, filename := range filenames {
@@ -27,7 +39,7 @@ func main() {
 			}
 			os.Exit(1)
 		} else {
-			color.Green("Requirements updated successfully")
+			color.Green("%s updated successfully", filename)
 		}
 	}
 }
