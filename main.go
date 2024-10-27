@@ -7,7 +7,7 @@ import (
 	"schleising.net/updater"
 )
 
-const application_version = "1.1.5"
+const application_version = "1.1.6"
 
 func main() {
 	// Add a flag to print the version
