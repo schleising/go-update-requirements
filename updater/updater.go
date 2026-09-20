@@ -2,11 +2,11 @@ package updater
 
 import (
 	"bufio"
-	"path/filepath"
 	"fmt"
 	"github.com/fatih/color"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 )
 
@@ -23,9 +23,9 @@ func UpdateRequirements(filename string) error {
 		return fmt.Errorf("%s is a directory", filename)
 	} else if !info.Mode().IsRegular() {
 		return fmt.Errorf("%s is not a regular file", filename)
-	} else if info.Mode().Perm() & 0200 == 0 {
+	} else if info.Mode().Perm()&0200 == 0 {
 		return fmt.Errorf("%s is not writable", filename)
-	} else if info.Mode().Perm() & 0400 == 0 {
+	} else if info.Mode().Perm()&0400 == 0 {
 		return fmt.Errorf("%s is not readable", filename)
 	}
 
@@ -34,13 +34,24 @@ func UpdateRequirements(filename string) error {
 		return err
 	}
 
+	// Point git-installed packages at the latest version tag
+	gitPins, err := updateGitDependencies(filename)
+	if err != nil {
+		return err
+	}
+
 	// Call the uninstallPackages function
 	if err := uninstallPackages(); err != nil {
 		return err
-	}	
+	}
 
 	// Call the installPackages function
 	if err := installPackages(filename); err != nil {
+		return err
+	}
+
+	// pip freeze writes commit SHAs for VCS packages; restore the tags we resolved
+	if err := applyGitTags(filename, gitPins); err != nil {
 		return err
 	}
 

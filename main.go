@@ -7,7 +7,7 @@ import (
 	"schleising.net/updater"
 )
 
-const application_version = "1.1.7"
+const application_version = "1.2.0"
 
 func main() {
 	// Add a flag to print the version
@@ -34,12 +34,12 @@ func main() {
 	color.Cyan("Requirement Updater Version %v", application_version)
 
 	// Declare a variable to hold the filenames
-	var filenames []string;
-	
+	var filenames []string
+
 	// Read a filename from the command line
 	if len(os.Args) < 2 {
 		// Declare a variable to hold the error
-		var err error;
+		var err error
 
 		// Find all files called requirements.txt recursively from the current directory
 		filenames, err = updater.FindRequirements()
